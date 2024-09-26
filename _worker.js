@@ -66,15 +66,6 @@ export default {
 			}
 		}
 		MainData = 自建节点;
-		fetch('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt')
-		  .then(response => response.text())  // 将响应内容转换为文本
-		  .then(data => {
-		    自建节点 = data;  // 将获取到的内容赋值给 自建节点
-		    console.log('自建节点内容:', 自建节点);  // 打印自建节点的内容
-		  })
-		  .catch(error => {
-		    console.error('获取内容时出错:', error);  // 处理任何错误
-		  });
 		urls = await ADD(订阅链接);
 
 		if ( !(token == mytoken || token == fakeToken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
