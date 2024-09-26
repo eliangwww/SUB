@@ -25,7 +25,7 @@ fetch('https://raw.githubusercontent.com/eliangwww/wangcai/main/data/ipdb_data.t
   })
   .then(data => {
     let MainData = data;  // 将获取的文本内容赋值给变量 MainData
-    console.log(MainData);  // 输出数据
+      // 输出数据
   })
   .catch(error => {
     console.error('Error fetching the data:', error);  // 捕获并显示错误
