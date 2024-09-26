@@ -17,14 +17,20 @@ let MainData = `
 
 `
 fetch('https://raw.githubusercontent.com/eliangwww/wangcai/main/data/ipdb_data.txt')
-  .then(response => response.text())  // 读取文本内容
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    return response.text();  // 读取文本内容
+  })
   .then(data => {
-    let MainData = data;  // 将数据赋值给 MainData
-    console.log(MainData);  // 输出数据查看
+    let MainData = data;  // 将获取的文本内容赋值给变量 MainData
+    console.log(MainData);  // 输出数据
   })
   .catch(error => {
-    console.error('Error fetching the data:', error);  // 错误处理
+    console.error('Error fetching the data:', error);  // 捕获并显示错误
   });
+
 
 let urls = [];
 let subconverter = "SUBAPI.fxxk.dedyn.io"; //在线订阅转换后端，目前使用CM的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
