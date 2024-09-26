@@ -14,7 +14,7 @@ let cacheTTL = 24 ;//小时，缓存时长
 
 //节点链接 + 订阅链接
 let MainData = `
-
+vless://d342d11e-d424-4583-b36e-524ab1f0afa4@20.48.5.180:80?path=Telegram%F0%9F%87%A8%F0%9F%87%B3+%40WangCai_8+%2F%3Fed%3D2048&security=none&encryption=none&host=a.ssll.gay&type=ws#%F0%9F%87%AF%F0%9F%87%B5JP 🈲请勿测速
 `
 fetch('https://raw.githubusercontent.com/eliangwww/wangcai/main/data/ipdb_data.txt')
   .then(response => {
