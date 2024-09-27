@@ -12,49 +12,42 @@ let timestamp = 4102329600000;//2099-12-31
 
 let cacheTTL = 24 ;//小时，缓存时长
 
-//节点链接 + 订阅链接
-let MainData = `
-
-`
-
+let MainData = ``;
 let 自建节点 = "";
-
 let MainDate = "";
 
-// 使用 fetch 获取远程文件内容
-fetch('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('网络响应错误');
-    }
-    return response.text();  // 返回文本内容
-  })
-  .then(data => {
-    // 将获取到的内容赋值给 MainDate
-    MainDate = data;
-    console.log('MainDate 内容:', MainDate);
-  })
-  .catch(error => {
-    console.error('获取内容时出错:', error);
-  });
-
 let urls = [];
-let subconverter = "SUBAPI.fxxk.dedyn.io"; //在线订阅转换后端，目前使用CM的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
-let subconfig = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini"; //订阅配置文件
+let subconverter = "SUBAPI.fxxk.dedyn.io"; // 在线订阅转换后端，目前使用CM的订阅转换功能。支持自建psub 可自行搭建 https://github.com/bulianglin/psub
+let subconfig = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini"; // 订阅配置文件
 let subProtocol = 'https';
 
 export default {
-	async fetch (request,env) {
+	async fetch (request, env) {
+		// 这里是确保 fetch 操作是异步的，使用 await 关键字
+		try {
+			const response = await fetch('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt');
+			if (!response.ok) {
+				throw new Error('网络响应错误');
+			}
+			MainDate = await response.text();  // 返回文本内容
+			console.log('MainDate 内容:', MainDate);
+
+			// 继续使用 MainDate 对 MainData 进行赋值操作
+			MainData = MainDate;
+		} catch (error) {
+			console.error('获取内容时出错:', error);
+		}
+
 		const userAgentHeader = request.headers.get('User-Agent');
 		const userAgent = userAgentHeader ? userAgentHeader.toLowerCase() : "null";
 		const url = new URL(request.url);
 		const token = url.searchParams.get('token');
 		mytoken = env.TOKEN || mytoken;
 		BotToken = env.TGTOKEN || BotToken;
-		ChatID = env.TGID || ChatID; 
-		TG =  env.TG || TG; 
+		ChatID = env.TGID || ChatID;
+		TG = env.TG || TG;
 		subconverter = env.SUBAPI || subconverter;
-		if( subconverter.includes("http://") ){
+		if (subconverter.includes("http://")) {
 			subconverter = subconverter.split("//")[1];
 			subProtocol = 'http';
 		} else {
@@ -63,22 +56,21 @@ export default {
 		subconfig = env.SUBCONFIG || subconfig;
 		FileName = env.SUBNAME || FileName;
 		MainData = env.LINK || MainData;
-		if(env.LINKSUB) urls = await ADD(env.LINKSUB);
+		if (env.LINKSUB) urls = await ADD(env.LINKSUB);
 
 		const currentDate = new Date();
-		currentDate.setHours(0, 0, 0, 0); 
+		currentDate.setHours(0, 0, 0, 0);
 		const timeTemp = Math.ceil(currentDate.getTime() / 1000);
 		const fakeToken = await MD5MD5(`${mytoken}${timeTemp}`);
-		//console.log(`${fakeUserID}\n${fakeHostName}`); // 打印fakeID
 
-		let UD = Math.floor(((timestamp - Date.now())/timestamp * total * 1099511627776 )/2);
-		total = total * 1099511627776 ;
-		let expire= Math.floor(timestamp / 1000) ;
+		let UD = Math.floor(((timestamp - Date.now()) / timestamp * total * 1099511627776) / 2);
+		total = total * 1099511627776;
+		let expire = Math.floor(timestamp / 1000);
 		SUBUpdateTime = env.SUBUPTIME || SUBUpdateTime;
 
 		let 重新汇总所有链接 = await ADD(MainData + '\n' + urls.join('\n'));
-		let 自建节点 ="";
-		let 订阅链接 ="";
+		let 自建节点 = "";
+		let 订阅链接 = "";
 		for (let x of 重新汇总所有链接) {
 			if (x.toLowerCase().startsWith('http')) {
 				订阅链接 += x + '\n';
@@ -88,6 +80,9 @@ export default {
 		}
 		MainData = 自建节点;
 		urls = await ADD(订阅链接);
+	}
+};
+
 
 		if ( !(token == mytoken || token == fakeToken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
 			if ( TG == 1 && url.pathname !== "/" && url.pathname !== "/favicon.ico" ) await sendMessage(`#异常访问 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
