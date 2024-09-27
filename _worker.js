@@ -19,15 +19,23 @@ let MainData = `
 
 let 自建节点 = "";
 
+let MainDate = "";
+
 // 使用 fetch 获取远程文件内容
 fetch('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt')
-  .then(response => response.text())  // 将响应内容转换为文本
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('网络响应错误');
+    }
+    return response.text();  // 返回文本内容
+  })
   .then(data => {
-    自建节点 = data;  // 将获取到的内容赋值给 自建节点
-    console.log('自建节点内容:', 自建节点);  // 打印自建节点的内容
+    // 将获取到的内容赋值给 MainDate
+    MainDate = data;
+    console.log('MainDate 内容:', MainDate);
   })
   .catch(error => {
-    console.error('获取内容时出错:', error);  // 处理任何错误
+    console.error('获取内容时出错:', error);
   });
 
 let urls = [];
