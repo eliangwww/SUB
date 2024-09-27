@@ -22,8 +22,7 @@ let subconfig = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/conf
 let subProtocol = 'https';
 
 export default {
-	async fetch (request, env) {
-		// 这里是确保 fetch 操作是异步的，使用 await 关键字
+	async fetch(request, env) {
 		try {
 			const response = await fetch('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt');
 			if (!response.ok) {
@@ -42,10 +41,10 @@ export default {
 		const userAgent = userAgentHeader ? userAgentHeader.toLowerCase() : "null";
 		const url = new URL(request.url);
 		const token = url.searchParams.get('token');
-		let mytoken = env.TOKEN || "mytoken";
-		let BotToken = env.TGTOKEN || "BotToken";
-		let ChatID = env.TGID || "ChatID";
-		let TG = env.TG || "TG";
+		mytoken = env.TOKEN || mytoken;
+		BotToken = env.TGTOKEN || BotToken;
+		ChatID = env.TGID || ChatID;
+		TG = env.TG || TG;
 		subconverter = env.SUBAPI || subconverter;
 		if (subconverter.includes("http://")) {
 			subconverter = subconverter.split("//")[1];
@@ -54,7 +53,7 @@ export default {
 			subconverter = subconverter.split("//")[1] || subconverter;
 		}
 		subconfig = env.SUBCONFIG || subconfig;
-		let FileName = env.SUBNAME || "FileName";
+		FileName = env.SUBNAME || FileName;
 		MainData = env.LINK || MainData;
 		if (env.LINKSUB) urls = await ADD(env.LINKSUB);
 
@@ -63,12 +62,10 @@ export default {
 		const timeTemp = Math.ceil(currentDate.getTime() / 1000);
 		const fakeToken = await MD5MD5(`${mytoken}${timeTemp}`);
 
-		let total = 1099511627776; // 示例值，你可以根据需要修改
-		let timestamp = Date.now(); // 示例值，你可以根据需要修改
 		let UD = Math.floor(((timestamp - Date.now()) / timestamp * total * 1099511627776) / 2);
 		total = total * 1099511627776;
 		let expire = Math.floor(timestamp / 1000);
-		let SUBUpdateTime = env.SUBUPTIME || "SUBUpdateTime";
+		SUBUpdateTime = env.SUBUPTIME || SUBUpdateTime;
 
 		let 重新汇总所有链接 = await ADD(MainData + '\n' + urls.join('\n'));
 		let 自建节点 = "";
@@ -84,6 +81,7 @@ export default {
 		urls = await ADD(订阅链接);
 	}
 };
+
 
 
 
