@@ -14,23 +14,24 @@ let cacheTTL = 24 ;//小时，缓存时长
 
 //节点链接 + 订阅链接
 let MainData = `
-vless://d342d11e-d424-4583-b36e-524ab1f0afa4@20.48.5.180:80?path=Telegram%F0%9F%87%A8%F0%9F%87%B3+%40WangCai_8+%2F%3Fed%3D2048&security=none&encryption=none&host=a.ssll.gay&type=ws#%F0%9F%87%AF%F0%9F%87%B5JP 🈲请勿测速
+
 `
 fetch('https://raw.githubusercontent.com/eliangwww/wangcai/main/data/ipdb_data.txt')
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok: ' + response.statusText);
     }
-    return response.text();
+    return response.text();  // 获取文本内容
   })
   .then(data => {
-    let MainData = data.replace(/\n/g, '');  // 替换所有换行符
-    console.log(MainData);  // 输出处理后的 MainData
+    let MainData = `
+${data}
+`;  // 用反引号包裹内容
+    console.log(MainData);  // 打印 MainData 到控制台
   })
   .catch(error => {
-    console.error('Error fetching the data:', error);
+    console.error('Error fetching the data:', error);  // 错误处理
   });
-});
 
 
 let urls = [];
