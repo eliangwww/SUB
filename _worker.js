@@ -12,30 +12,23 @@ let timestamp = 4102329600000;//2099-12-31
 
 let cacheTTL = 24 ;//小时，缓存时长
 
-const https = require('https');
-
 //节点链接 + 订阅链接
 let MainData = `
 
 `
 
-https.get('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt', (resp) => {
-  let data = '';
+let 自建节点 = "";
 
-  // 监听数据接收事件
-  resp.on('data', (chunk) => {
-    data += chunk;
+// 使用 fetch 获取远程文件内容
+fetch('https://raw.githubusercontent.com/eliangwww/wangcai/refs/heads/main/data/ipdb_data.txt')
+  .then(response => response.text())  // 将响应内容转换为文本
+  .then(data => {
+    自建节点 = data;  // 将获取到的内容赋值给 自建节点
+    console.log('自建节点内容:', 自建节点);  // 打印自建节点的内容
+  })
+  .catch(error => {
+    console.error('获取内容时出错:', error);  // 处理任何错误
   });
-
-  // 数据接收完毕时执行
-  resp.on('end', () => {
-    自建节点 = data;
-    console.log('自建节点内容:', 自建节点);
-  });
-
-}).on('error', (err) => {
-  console.error('请求错误:', err.message);
-});
 
 let urls = [];
 let subconverter = "SUBAPI.fxxk.dedyn.io"; //在线订阅转换后端，目前使用CM的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
